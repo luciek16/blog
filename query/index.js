@@ -6,9 +6,9 @@ app.use(express.json());
 app.use(cors());
 
 const posts = {};
-// provide full listing of posts + comments
+// provides full listing of posts + comments
 app.get("/posts", (req, res) => {
-	res.send(posts);
+	return res.send(posts);
 });
 
 // receiving events from the event bus
@@ -20,13 +20,23 @@ app.post("/events", (req, res) => {
 		posts[id] = { id, title, comments: [] };
 	}
 	if (type === "CommentCreated") {
-		const { id, content, postId } = data;
+		const { id, content, postId, status } = data;
 
 		const post = posts[postId];
-		post.comments.push({ id, content });
+		post.comments.push({ id, content, status });
 	}
+	if (type === "CommentUpdated") {
+		const { id, content, postId, status } = data;
+
+		const post = posts[postId];
+		const comment = post.comments.find((comment) => comment.id === id);
+
+		comment.status = status;
+		comment.content = content;
+	}
+
 	console.log(posts);
-	res.send({});
+	return res.send({});
 });
 
 app.listen(4002, () => {
