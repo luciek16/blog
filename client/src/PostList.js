@@ -7,9 +7,11 @@ const PostList = () => {
 	const [posts, setPosts] = useState({});
 
 	const fetchPosts = async () => {
-		const res = await axios.get("http://localhost:4002/posts");
+		const res = await axios
+			.get("http://localhost:4002/posts")
+			.catch((error) => console.log("Fetch Posts: ", error.message));
 
-		setPosts(res.data);
+		setPosts(res ? res.data : {});
 	};
 
 	useEffect(() => {
