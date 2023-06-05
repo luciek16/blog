@@ -11,7 +11,7 @@ app.use(cors());
 const posts = {};
 
 app.get("/posts", (req, res) => {
-	res.send(posts);
+	return res.send(posts);
 });
 
 app.post("/posts", async (req, res) => {
@@ -40,7 +40,7 @@ app.post("/posts", async (req, res) => {
 app.post("/events", (req, res) => {
 	console.log("Event received", req.body.type);
 
-	res.send({});
+	return res.send({});
 });
 
 app.listen(4000, () => {
